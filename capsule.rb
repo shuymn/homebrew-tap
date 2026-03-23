@@ -32,6 +32,9 @@ class Capsule < Formula
 
   def caveats
     <<~EOS
+      To activate capsule, add the following to your ~/.zshrc:
+        eval "$(capsule init zsh)"
+
       To unregister the daemon before uninstalling, run:
         capsule daemon uninstall
     EOS
