@@ -26,6 +26,17 @@ class Capsule < Formula
     bin.install 'capsule'
   end
 
+  def post_install
+    system "#{bin}/capsule", "daemon", "install"
+  end
+
+  def caveats
+    <<~EOS
+      To unregister the daemon before uninstalling, run:
+        capsule daemon uninstall
+    EOS
+  end
+
   test do
     system "#{bin}/capsule", '-h'
   end
