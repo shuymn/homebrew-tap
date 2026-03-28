@@ -26,6 +26,10 @@ class Pommitlint < Formula
     end
   end
 
+  def install
+    bin.install 'pommitlint'
+  end
+
   test do
     system "#{bin}/pommitlint", '-h'
   end
