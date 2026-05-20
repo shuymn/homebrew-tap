@@ -1,27 +1,27 @@
 class Kastty < Formula
   desc 'A browser-based terminal sharing tool powered by ghostty-web and Bun'
-  version '0.1.0'
+  version '0.2.0'
   homepage 'https://github.com/shuymn/kastty'
 
   on_macos do
     if Hardware::CPU.arm?
-      url 'https://github.com/shuymn/kastty/releases/download/v0.1.0/kastty_v0.1.0_darwin_arm64.zip'
-      sha256 '26a2ab499f730be1cb3d3f1064af75253d0a7821e31bbd2e689cc7741f81b796'
+      url 'https://github.com/shuymn/kastty/releases/download/v0.2.0/kastty_v0.2.0_darwin_arm64.zip'
+      sha256 '8aa5c70ca606626bca42f7ac3809669aff58a7678a5a2fdc71a769f80bb678e3'
     end
     if Hardware::CPU.intel?
-      url 'https://github.com/shuymn/kastty/releases/download/v0.1.0/kastty_v0.1.0_darwin_amd64.zip'
-      sha256 'b9693f20291210525aa2e9382298cdae8bb6eca48261b006004e70ba7e24d79f'
+      url 'https://github.com/shuymn/kastty/releases/download/v0.2.0/kastty_v0.2.0_darwin_amd64.zip'
+      sha256 '9b29142db4db40421cfe860d513d93e5047b659223e8ff70f1d0818b06d35af6'
     end
   end
 
   on_linux do
     if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
-      url 'https://github.com/shuymn/kastty/releases/download/v0.1.0/kastty_v0.1.0_linux_arm64.tar.gz'
-      sha256 '634312ef1e0a67f594f57e3f9d35256610285f41c801134dd379493d88858d04'
+      url 'https://github.com/shuymn/kastty/releases/download/v0.2.0/kastty_v0.2.0_linux_arm64.tar.gz'
+      sha256 '7338984ec06470ceecade0c07800621deb880c8d753e2805556f9efea93c1d1b'
     end
     if Hardware::CPU.intel?
-      url 'https://github.com/shuymn/kastty/releases/download/v0.1.0/kastty_v0.1.0_linux_amd64.tar.gz'
-      sha256 '61427ce549f283c7d5d2c69e771300e7dec4c2830894dedb347637dc507ac8b6'
+      url 'https://github.com/shuymn/kastty/releases/download/v0.2.0/kastty_v0.2.0_linux_amd64.tar.gz'
+      sha256 '2cc15af68c7b816112be18c2d38135921cf3e1af7ce1148b34807d52e6639611'
     end
   end
 
