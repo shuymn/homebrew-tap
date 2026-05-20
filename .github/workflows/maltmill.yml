@@ -1,0 +1,86 @@
+name: maltmill
+
+on:
+  workflow_dispatch:
+    inputs:
+      formula:
+        description: Formula to update
+        required: true
+        type: choice
+        options:
+          - capsule
+          - kastty
+          - pommitlint
+
+env:
+  MALTMILL_VERSION: v1.5.0
+
+permissions:
+  contents: write
+
+concurrency:
+  group: maltmill-main
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: main
+          persist-credentials: false
+
+      - name: Validate input
+        env:
+          FORMULA: ${{ inputs.formula }}.rb
+        run: |
+          set -euo pipefail
+
+          if [[ ! -f "${FORMULA}" ]]; then
+            echo "formula does not exist: ${FORMULA}" >&2
+            exit 1
+          fi
+
+      - name: Install maltmill
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          asset="maltmill_${MALTMILL_VERSION}_linux_amd64.tar.gz"
+          gh release download "${MALTMILL_VERSION}" \
+            --repo Songmu/maltmill \
+            --pattern "${asset}" \
+            --output maltmill.tar.gz
+          tar -xzf maltmill.tar.gz --strip-components=1 "${asset%.tar.gz}/maltmill"
+          sudo install -m 0755 maltmill /usr/local/bin/maltmill
+          maltmill -h
+
+      - name: Run maltmill
+        env:
+          FORMULA: ${{ inputs.formula }}.rb
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          maltmill -w "${FORMULA}"
+
+      - name: Commit and push
+        env:
+          FORMULA: ${{ inputs.formula }}.rb
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          if git diff --exit-code -- "${FORMULA}"; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- "${FORMULA}"
+          git commit -m "Update ${FORMULA} with maltmill"
+          git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:main
