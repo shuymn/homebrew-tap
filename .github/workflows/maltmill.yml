@@ -1,6 +1,8 @@
 name: maltmill
 
 on:
+  schedule:
+    - cron: '0 * * * *'
   workflow_dispatch:
     inputs:
       formula:
@@ -26,6 +28,11 @@ jobs:
   update:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        formula: ${{ github.event_name == 'workflow_dispatch' && fromJSON(format('["{0}"]', inputs.formula)) || fromJSON('["capsule","kastty","pommitlint"]') }}
     steps:
       - name: Checkout main
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -33,9 +40,9 @@ jobs:
           ref: main
           persist-credentials: false
 
-      - name: Validate input
+      - name: Validate formula
         env:
-          FORMULA: ${{ inputs.formula }}.rb
+          FORMULA: ${{ matrix.formula }}.rb
         run: |
           set -euo pipefail
 
@@ -61,7 +68,7 @@ jobs:
 
       - name: Run maltmill
         env:
-          FORMULA: ${{ inputs.formula }}.rb
+          FORMULA: ${{ matrix.formula }}.rb
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
@@ -69,7 +76,7 @@ jobs:
 
       - name: Commit and push
         env:
-          FORMULA: ${{ inputs.formula }}.rb
+          FORMULA: ${{ matrix.formula }}.rb
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
