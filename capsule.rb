@@ -1,24 +1,24 @@
 class Capsule < Formula
   desc 'Daemon-backed Rust prompt engine for zsh with async updates and hot-reloadable modules.'
-  version '0.1.2'
+  version '0.2.0'
   homepage 'https://github.com/shuymn/capsule'
   license 'MIT'
 
   on_macos do
     if Hardware::CPU.arm?
-      url 'https://github.com/shuymn/capsule/releases/download/v0.1.2/capsule-v0.1.2-darwin-arm64.tar.gz'
-      sha256 '44497e04237cc031d7d8346d0c3b9911bcaa3bbd7d17fe317d16f942e720e4aa'
+      url 'https://github.com/shuymn/capsule/releases/download/v0.2.0/capsule-v0.2.0-darwin-arm64.tar.gz'
+      sha256 'fe3a018dff1db4152b093009de2eaf80807ba041ca16cc660f64bdc4452992a3'
     end
   end
 
   on_linux do
     if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
-      url 'https://github.com/shuymn/capsule/releases/download/v0.1.2/capsule-v0.1.2-linux-arm64.tar.gz'
-      sha256 '979fcffe74bfe11938f3a4466218750dafccc37790016189c5d09f8a9015faa4'
+      url 'https://github.com/shuymn/capsule/releases/download/v0.2.0/capsule-v0.2.0-linux-arm64.tar.gz'
+      sha256 '73102bce60d3175c0723ff7ee0138885023de729a6fa3e67e9312c745d4ae72d'
     end
     if Hardware::CPU.intel?
-      url 'https://github.com/shuymn/capsule/releases/download/v0.1.2/capsule-v0.1.2-linux-amd64.tar.gz'
-      sha256 '0b82d29001b946ef1a98f5e32ccfd4b52537832b1f80e2eb1548c8262541ea60'
+      url 'https://github.com/shuymn/capsule/releases/download/v0.2.0/capsule-v0.2.0-linux-amd64.tar.gz'
+      sha256 'edaf658813275e85f5c3c4503b918104490b6398e7a46988fe235286efe97d0b'
     end
   end
 
